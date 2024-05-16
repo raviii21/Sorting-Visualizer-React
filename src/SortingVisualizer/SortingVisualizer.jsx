@@ -15,21 +15,31 @@ function SortingVisualizer() {
     } 
 
     const mergeSort = () => {
-      const sortedJSArray = array.sort((a,b)=>a-b);
-      const mergeSortArray = sortingAlgorithm.mergeSort(array);
+      const animation = sortingAlgorithm.getSortAnimation(array);
+      for(let i = 0; i<animation.length; ++i){
+        const arrayBar = document.querySelectorAll(".arr-bar");
 
-      if(sortedJSArray.length != mergeSortArray.length){
-        console.log("False");
-        return;
-      }
-      for(let i = 0; i< mergeSortArray.length; ++i){
-        if(mergeSortArray[i] != sortedJSArray[i]){
-          console.log("False");
-          return;
+        const isColorChange = (i%3 !== 2);
+        if(isColorChange) {
+          // Change comparing array bar's color.
+          const [firstBarInd, secondBarInd] = animation[i];
+          const firstBarStyle = arrayBar[firstBarInd].style;
+          const secondBarStyle = arrayBar[secondBarInd].style;
+
+          const color = i%3 === 0 ? "red" : "turquoise";
+
+          setTimeout(()=>{
+            firstBarStyle.backgroundColor = color;
+            secondBarStyle.backgroundColor = color;
+          }, i * 1);
+        }else{
+          // Overwrite comparing array bar's height.
+          setTimeout(() => {
+            const [firstInd, newHeight] = animation[i];
+            arrayBar[firstInd].style.height = `${newHeight}px`;
+          }, i * 1);
         }
       }
-      console.log("True");
-      return;
     }
 
     useEffect(()=>{ 
